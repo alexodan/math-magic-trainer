@@ -1,45 +1,50 @@
-<a id="download">Download</a>
-<button id="stop">Stop</button>
+<!DOCTYPE html>
+<!--
+ *  Copyright (c) 2015 The WebRTC project authors. All Rights Reserved.
+ *
+ *  Use of this source code is governed by a BSD-style license
+ *  that can be found in the LICENSE file in the root of the source
+ *  tree.
+-->
+<html>
+<body>
+
+<div id="container">
+    <audio id="gum-local" controls autoplay></audio>
+</div>
+
 <script>
-    let shouldStop = false;
-    let stopped = false;
-    const downloadLink = document.getElementById('download');
-    const stopButton = document.getElementById('stop');
+  'use strict';
 
-    stopButton.addEventListener('click', function () {
-        shouldStop = true;
-    })
+  // Put variables in global scope to make them available to the browser console.
+  const audio = document.querySelector('audio');
 
-    var handleSuccess = function (stream) {
-        console.log("handle succesassas");
-        const options = { mimeType: 'video/webm;codecs=vp9' };
-        const recordedChunks = [];
-        const mediaRecorder = new MediaRecorder(stream, options);
+  const constraints = window.constraints = {
+    audio: true,
+    video: false
+  };
 
-        mediaRecorder.addEventListener('dataavailable', function (e) {
-            console.log("data avaialavassd");
-            if (e.data.size > 0) {
-                recordedChunks.push(e.data);
-            }
+  function handleSuccess(stream) {
+    const context = new AudioContext();
+    const source = context.createMediaStreamSource(stream);
+    const processor = context.createScriptProcessor(1024, 1, 1);
 
-            if (shouldStop === true && stopped === false) {
-                mediaRecorder.stop();
-                stopped = true;
-            }
-        });
+    source.connect(processor);
+    processor.connect(context.destination);
 
-        mediaRecorder.addEventListener('stop', function () {
-            downloadLink.href = URL.createObjectURL(new Blob(recordedChunks));
-            downloadLink.download = 'acetest.wav';
-        });
-
-        mediaRecorder.start();
+    processor.onaudioprocess = function(e) {
+      // Do something with the data, e.g. convert it to WAV
+      console.log(e.inputBuffer);
     };
+  }
 
-    navigator.mediaDevices.getUserMedia({ audio: true, video: false })
-        .then(data => {
-            console.log("get user media");
-            handleSuccess(data);
-        });
+  function handleError(error) {
+    console.log('navigator.MediaDevices.getUserMedia error: ', error.message, error.name);
+  }
+
+  navigator.mediaDevices.getUserMedia(constraints).then(handleSuccess).catch(handleError);
 
 </script>
+
+</body>
+</html>
