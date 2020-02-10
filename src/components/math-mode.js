@@ -2,7 +2,7 @@ import React from 'react';
 
 import './math-menu.css';
 
-const MathMenu = ({ handleMenuClick }) => {
+const MathMenu = ({ handleModeClick }) => {
 	const options = [
 		{ key: 'multiplication-2by1', ui: '2 by 1' },
 		{ key: 'multiplication-2by2', ui: '2 by 2' },
@@ -13,9 +13,9 @@ const MathMenu = ({ handleMenuClick }) => {
 	];
 	return (
 		<ul style={{ display: 'flex', padding: 0 }}>
-			{options.map((opt) => (
-				<li className="menu-option">
-					<button onClick={handleMenuClick}>{opt.ui}</button>
+			{options.map((opt, key) => (
+				<li key={key} className="menu-option">
+					<button onClick={() => handleModeClick(opt)}>{opt.ui}</button>
 				</li>
 			))}
 		</ul>
