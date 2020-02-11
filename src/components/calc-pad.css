@@ -1,5 +1,5 @@
 .calcpad {
-	margin: 0 auto;
+	margin: 10px auto;
 	display: flex;
 	flex-wrap: wrap;
 }
@@ -10,4 +10,5 @@
   background-color: #264757;
   color: #fff;
   font-size: 1.2rem;
+  height: 45px;
 }

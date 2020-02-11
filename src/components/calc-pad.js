@@ -29,7 +29,7 @@ const CalcPad = ({ onClickPad, onBackspace, onClear }) => {
 			<button className="btn" onClick={() => onClickPad(8)}>
 				8
 			</button>
-			<button className="btn" onClick={() => onClickPad(8)}>
+			<button className="btn" onClick={() => onClickPad(9)}>
 				9
 			</button>
 			<button className="btn" onClick={() => onBackspace()}>
