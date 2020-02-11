@@ -15,7 +15,7 @@ const MathMenu = ({ handleModeClick }) => {
 		<ul style={{ display: 'flex', padding: 0 }}>
 			{options.map((opt, key) => (
 				<li key={key} className="menu-option">
-					<button onClick={() => handleModeClick(opt)}>{opt.ui}</button>
+					<button className="option-button" onClick={() => handleModeClick(opt)}>{opt.ui}</button>
 				</li>
 			))}
 		</ul>

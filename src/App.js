@@ -1,26 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
 import MathMode from './components/math-mode';
 import Problem from './components/problem';
 import Solution from './components/solution';
 import CalcPad from './components/calc-pad';
+import CountDown from './components/count-down';
+import GameStateModal from './components/game-state-modal';
+import Utils from './utils/utils';
 
-function getRandomProblem() {
-	return '23 by 49';
+const getSolution = (currentProblem) => {
+  console.log(currentProblem);
+  const [ part1, operator, part2 ] = currentProblem.split(' ');
+  return Number(part1) * Number(part2);
 }
 
-function getSolution(currentProblem) {
-	console.log('ASDASD', currentProblem);
-	return '1127';
+const getRandomProblem = () => {
+  const arr = Utils.range(11, 99);
+  const first = arr[Math.floor(Math.random() * arr.length)];
+  const second = arr[Math.floor(Math.random() * arr.length)];
+  return `${first} by ${second}`;
 }
 
 function App() {
-	const [ currentMode, setCurrentMode ] = useState('');
-	const [ currentProblem, setCurrentProblem ] = useState(getRandomProblem);
+  const COUNT_DOWN = 10;
+
+  const [ score, setScore ] = useState(0);
+  const [ countDown, setCountDown ] = useState(COUNT_DOWN);
+  const [ currentMode, setCurrentMode ] = useState('');
+	const [ currentProblem, setCurrentProblem ] = useState(getRandomProblem());
 	const [ currentValue, setCurrentValue ] = useState('');
 	const [ solution, setSolution ] = useState(getSolution(currentProblem));
 	const [ gameState, setGameState ] = useState('playing');
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (countDown > 0) {
+        setCountDown(countDown - 1);
+      } else {
+        setGameState('lost');
+        clearInterval(interval);
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [countDown]);
 
 	const onModeClick = (modeClicked) => {
 		console.log(modeClicked);
@@ -30,15 +53,26 @@ function App() {
 	};
 
 	const calculateSolution = (number) => {
-		const current = currentValue + number;
-		// if game state ...
-		if (current === solution) {
-			setGameState('won');
-			console.log('you  won');
-			// setCurrentProblem(getRandomProblem());
-		} else if (current.length >= solution.length) {
-			setGameState('lost');
-		}
+    console.log(solution);
+    const current = currentValue + number;
+    if (gameState !== 'lost') {
+      if (Number(current) === Number(solution)) {
+        const problem = getRandomProblem();
+        setGameState('won');
+        setCurrentProblem(problem);
+        setSolution(getSolution(problem));
+        setCurrentValue('');
+        setCountDown(COUNT_DOWN);
+        setScore(score + 10);
+        console.log('you won');
+      } else if (current.length >= solution.length) {
+        setGameState('lost');
+      }
+    } else {
+      if (current.length < solution.length) {
+        setGameState('playing');
+      }
+    }
 	};
 
 	const handleClickPad = (number) => {
@@ -52,14 +86,25 @@ function App() {
 
 	const handleClearInput = () => {
 		setCurrentValue('');
-	};
+  };
+  
+  const onKeepPlaying = () => {
+    console.log("KEEP PLAYINGGG!");
+  }
+
+  const onPlayLater = () => {
+    console.log("MAYBE NEXT TIME LOL!");
+  }
 
 	return (
 		<div className="App">
 			<MathMode handleModeClick={onModeClick} />
+      <div style={ { justifyContent: 'flex-end' } }>{score}</div>
 			<Problem currentProblem={currentProblem} />
 			<Solution value={currentValue} />
 			<CalcPad onClickPad={handleClickPad} onBackspace={handleBackspace} onClear={handleClearInput} />
+      <CountDown timeLeft={countDown} />
+      { gameState !== 'playing' ? <GameStateModal gameState={gameState} keepPlaying={onKeepPlaying} playLater={onPlayLater} /> : null }
 		</div>
 	);
 }

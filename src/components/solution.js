@@ -1,4 +1,5 @@
 import React from 'react';
+import './solution.css';
 
 const Solution = ({ value }) => {
 	return (

@@ -1,0 +1,10 @@
+.problem-container {
+  display: flex;
+  justify-content: center;
+}
+
+.problem-container span {
+  margin: 5px;
+  color: #fff;
+  font-size: 1.4rem;
+}
