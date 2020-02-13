@@ -3,7 +3,6 @@ import './game-state-modal.css';
 
 // gamestates are 'won', 'lost', 'playing'
 const GameStateModal = ({gameState, keepPlaying, playLater}) => {
-  console.log(gameState);
   return (
     <div className="game-state-modal">
       {

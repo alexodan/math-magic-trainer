@@ -10,7 +10,6 @@ import GameStateModal from "./components/game-state-modal";
 import Utils from "./utils/utils";
 
 const getSolution = currentProblem => {
-  console.log(currentProblem);
   const [part1, operator, part2] = currentProblem.split(" ");
   return Number(part1) * Number(part2);
 };
@@ -32,6 +31,8 @@ function App() {
   const [currentValue, setCurrentValue] = useState("");
   const [solution, setSolution] = useState(getSolution(currentProblem));
   const [gameState, setGameState] = useState("playing");
+
+  // console.log("asddsa");
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -64,7 +65,6 @@ function App() {
         setCurrentValue("");
         setCountDown(COUNT_DOWN);
         setScore(score + 10);
-        console.log("you won");
       } else if (current.length >= solution.length) {
         setGameState("lost");
       }
@@ -89,18 +89,16 @@ function App() {
   };
 
   const onKeepPlaying = () => {
-    console.log("KEEP PLAYINGGG!");
-    setGameState("playing");
     const problem = getRandomProblem();
+    setGameState("playing");
     setCurrentProblem(problem);
     setSolution(getSolution(problem));
     setCountDown(COUNT_DOWN);
   };
 
   const onPlayLater = () => {
-    console.log("MAYBE NEXT TIME LOL!");
-    setGameState("playing");
     const problem = getRandomProblem();
+    setGameState("playing");
     setCurrentProblem(problem);
     setSolution(getSolution(problem));
     setCountDown(COUNT_DOWN);
