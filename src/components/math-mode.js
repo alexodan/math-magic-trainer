@@ -2,7 +2,7 @@ import React from 'react';
 
 import './math-menu.css';
 
-const MathMenu = ({ handleModeClick }) => {
+const MathMode = ({ handleModeClick }) => {
 	const options = [
 		{ key: 'multiplication-2by1', ui: '2 by 1' },
 		{ key: 'multiplication-2by2', ui: '2 by 2' },
@@ -22,4 +22,4 @@ const MathMenu = ({ handleModeClick }) => {
 	);
 };
 
-export default MathMenu;
+export default MathMode;

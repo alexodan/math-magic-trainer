@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./App.css";
 
 import MathMode from "./components/math-mode";
@@ -22,29 +22,15 @@ const getRandomProblem = () => {
 };
 
 function App() {
+
   const COUNT_DOWN = 20;
 
   const [score, setScore] = useState(0);
-  const [countDown, setCountDown] = useState(COUNT_DOWN);
   const [currentMode, setCurrentMode] = useState("");
   const [currentProblem, setCurrentProblem] = useState(getRandomProblem());
   const [currentValue, setCurrentValue] = useState("");
   const [solution, setSolution] = useState(getSolution(currentProblem));
   const [gameState, setGameState] = useState("playing");
-
-  // console.log("asddsa");
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (countDown > 0) {
-        setCountDown(countDown - 1);
-      } else {
-        setGameState("lost");
-        clearInterval(interval);
-      }
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [countDown]);
 
   const onModeClick = modeClicked => {
     console.log(modeClicked);
@@ -63,7 +49,6 @@ function App() {
         setCurrentProblem(problem);
         setSolution(getSolution(problem));
         setCurrentValue("");
-        setCountDown(COUNT_DOWN);
         setScore(score + 10);
       } else if (current.length >= solution.length) {
         setGameState("lost");
@@ -93,7 +78,6 @@ function App() {
     setGameState("playing");
     setCurrentProblem(problem);
     setSolution(getSolution(problem));
-    setCountDown(COUNT_DOWN);
   };
 
   const onPlayLater = () => {
@@ -101,8 +85,9 @@ function App() {
     setGameState("playing");
     setCurrentProblem(problem);
     setSolution(getSolution(problem));
-    setCountDown(COUNT_DOWN);
   };
+
+  const onCountDownFinished = () => setGameState("lost");
 
   return (
     <div className="App">
@@ -115,7 +100,7 @@ function App() {
         onBackspace={handleBackspace}
         onClear={handleClearInput}
       />
-      <CountDown timeLeft={countDown} />
+      <CountDown timeLeft={COUNT_DOWN} onCountDownFinished={onCountDownFinished} />
       {gameState !== "playing" ? (
         <GameStateModal
           gameState={gameState}
