@@ -1,36 +1,40 @@
 import React, { useEffect, useState, useRef } from 'react';
 import './count-down.css';
 
-const CountDown = ({ timeLeft, onCountDownFinished }) => {
-  const [countDown, setCountDown] = useState(timeLeft);
-  const savedCallback = useRef();
+const CountDown = ({ timeLeft, updateCountDown, onCountDownFinished, isPlaying }) => {
+	const savedCallback = useRef();
 
-  function callback() {
-    if (countDown > 0) {
-      setCountDown(countDown - 1);
-    } else {
-      onCountDownFinished();
-    }
-  }
+	function callback() {
+		if (timeLeft > 0) {
+			updateCountDown(timeLeft - 1);
+		} else {
+			onCountDownFinished();
+		}
+	}
 
-  useEffect(() => {
-    savedCallback.current = callback;
-  });
+	useEffect(() => {
+		savedCallback.current = callback;
+	});
 
-  useEffect(() => {
-    function tick() {
-      savedCallback.current();
-    }
+	useEffect(
+		() => {
+			function tick() {
+				savedCallback.current();
+			}
 
-    let id = setInterval(tick, 1000);
-    return () => clearInterval(id);
-  }, []);
+			if (isPlaying) {
+				let id = setInterval(tick, 1000);
+				return () => clearInterval(id);
+			}
+		},
+		[ isPlaying ]
+	);
 
-  return (
-    <div className="count-down">
-      <span>{ countDown }</span>
-    </div>
-  );
-}
+	return (
+		<div className="count-down">
+			<span>{timeLeft}</span>
+		</div>
+	);
+};
 
 export default CountDown;
