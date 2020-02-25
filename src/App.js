@@ -44,12 +44,11 @@ function App() {
 			if (Number(current) === Number(solution)) {
 				const problem = getRandomProblem();
 				setGameState('won');
-				setCurrentProblem(problem);
-				setSolution(getSolution(problem));
 				setCurrentValue('');
 				setScore(score + 10);
 			} else if (current.length >= solution.length) {
 				setGameState('lost');
+				setCurrentValue('');
 			}
 		} else {
 			if (current.length < solution.length) {

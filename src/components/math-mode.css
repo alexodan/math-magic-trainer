@@ -1,3 +1,9 @@
+.menu-container {
+	display: flex;
+	padding: 15px 5px;
+	margin: 0;
+}
+
 .menu-option {
 	list-style: none;
 	background-color: yellowgreen;

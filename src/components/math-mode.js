@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './math-menu.css';
+import './math-mode.css';
 
 const MathMode = ({ handleModeClick }) => {
 	const options = [
@@ -12,10 +12,12 @@ const MathMode = ({ handleModeClick }) => {
 		{ key: 'multiplication-3by3', ui: '3 by 3' }
 	];
 	return (
-		<ul style={{ display: 'flex', padding: 0 }}>
+		<ul className="menu-container">
 			{options.map((opt, key) => (
 				<li key={key} className="menu-option">
-					<button className="option-button" onClick={() => handleModeClick(opt)}>{opt.ui}</button>
+					<button className="option-button" onClick={() => handleModeClick(opt)}>
+						{opt.ui}
+					</button>
 				</li>
 			))}
 		</ul>
